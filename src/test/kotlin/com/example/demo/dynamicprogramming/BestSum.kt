@@ -20,7 +20,7 @@ class BestSum {
      * Space Complexity: 0(m^2)
      *
      */
-    fun bestSum(targetSum: Long, numbers: ArrayList<Long>): ArrayList<Long>? {
+    private fun bestSum(targetSum: Long, numbers: ArrayList<Long>): ArrayList<Long>? {
         if (targetSum == 0L) return arrayListOf()
         if (targetSum < 0) return null
 
@@ -47,12 +47,12 @@ class BestSum {
      * Space Complexity: 0(m^2)
      *
      */
-    fun memoizedBestSum(targetSum: Long,
+    private fun memoizedBestSum(targetSum: Long,
                         numbers: ArrayList<Long>,
                         memo: HashMap<Long, ArrayList<Long>?> = hashMapOf()): ArrayList<Long>? {
         if (memo.containsKey(targetSum)) return memo[targetSum]
         if (targetSum == 0L) return arrayListOf()
-        if (targetSum < 0) return null
+        if (targetSum < 0L) return null
 
         var shortestCombination: ArrayList<Long>? = null
 
@@ -60,12 +60,11 @@ class BestSum {
             val remainder = targetSum - i
             val remainderCombination = memoizedBestSum(remainder, numbers, memo)
             remainderCombination?.let {
-                remainderCombination.add(i)
+                remainderCombination += i
 
                 // check if combination is shorter than the current "shortest"
                 if (shortestCombination == null || remainderCombination.size < shortestCombination!!.size)
                     shortestCombination = remainderCombination
-
 
             }
         }

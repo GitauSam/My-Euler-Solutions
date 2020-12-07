@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.projecteuler
 
 import org.junit.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -109,15 +109,47 @@ class LargeSum {
 
     @Test
     fun getFirstTenTermsOfSum() {
-        val splitHundredTerms = x.split("\n")
+
+        val listMain = returnSplitElementsList(x)
+
+        var finalSum = ""
+
+        var overflow: Long = 0
+
+        for (i in 9 downTo 0) {
+            var sumOfSegment: Long = 0
+            for (j in listMain) {
+                sumOfSegment += j[i]
+            }
+            sumOfSegment += overflow
+
+            overflow = when (sumOfSegment.toString().length > 5) {
+                true -> {
+                    println(sumOfSegment.toString().substring(0, sumOfSegment.toString().length - 5))
+                    println(sumOfSegment)
+                    sumOfSegment.toString().substring(0, sumOfSegment.toString().length - 5).toLong()
+                }
+                else -> 0
+            }
+
+            finalSum = "$sumOfSegment$finalSum"
+        }
+
+        println(finalSum)
+    }
+
+//    5537376230
+//    5537376532
+
+    fun returnSplitElementsList(hundredTerms: String): MutableList<MutableList<Int>> {
+
         val listMain =  mutableListOf<MutableList<Int>>()
-        var arrCounter = 9
-        var sum = 0
-        val sumList = mutableListOf<String>()
         var fiveDigits = ""
+        val splitHundredTerms = hundredTerms.split("\n")
 
         for (i in splitHundredTerms) {
             val subArray = mutableListOf<Int>()
+
             for (j in i.toCharArray()) {
                 fiveDigits += j
                 if (fiveDigits.length == 5) {
@@ -125,14 +157,11 @@ class LargeSum {
                     fiveDigits = ""
                 }
             }
+
             listMain.add(subArray)
         }
 
-        for (i in listMain) {
-            sum += i[arrCounter]
-        }
-
-        println(listMain)
+        return listMain
     }
 
 }
