@@ -33,8 +33,14 @@ class BestSum {
                 remainderCombination.add(i)
 
                 // check if combination is shorter than the current "shortest"
-                if (shortestCombination == null || remainderCombination.size < shortestCombination!!.size)
+                if (shortestCombination == null || remainderCombination.size < shortestCombination!!.size) {
+//                    println("previous shortest combination: $shortestCombination")
+//                    println("evaluated result: $remainder")
+//                    println("evaluated combination: $remainderCombination")
                     shortestCombination = remainderCombination
+//                    println("resulting combination for target sum $targetSum: $shortestCombination")
+//                    println("------------------------------------------------------------------")
+                }
             }
         }
 
@@ -50,9 +56,20 @@ class BestSum {
     private fun memoizedBestSum(targetSum: Long,
                         numbers: ArrayList<Long>,
                         memo: HashMap<Long, ArrayList<Long>?> = hashMapOf()): ArrayList<Long>? {
+
+        println("**************************************************")
+        println("calling function with targetSum: $targetSum")
         if (memo.containsKey(targetSum)) return memo[targetSum]
-        if (targetSum == 0L) return arrayListOf()
-        if (targetSum < 0L) return null
+        if (targetSum == 0L) {
+            println("returning empty array to parent call coz targetSum is zero")
+            println("+++++++++++++++++++++++++++++++++++++++++++++++++")
+            println("In parent call now...")
+            return arrayListOf()
+        }
+        if (targetSum < 0L) {
+            println("returning null to parent call coz targetSum is -ve")
+            return null
+        }
 
         var shortestCombination: ArrayList<Long>? = null
 
@@ -60,16 +77,26 @@ class BestSum {
             val remainder = targetSum - i
             val remainderCombination = memoizedBestSum(remainder, numbers, memo)
             remainderCombination?.let {
-                remainderCombination += i
+                remainderCombination.add(i)
 
                 // check if combination is shorter than the current "shortest"
-                if (shortestCombination == null || remainderCombination.size < shortestCombination!!.size)
+                if (shortestCombination == null || remainderCombination.size < shortestCombination!!.size) {
+                    println("previous shortest combination: $shortestCombination")
+//                    println("evaluated result: $remainder")
+                    println("evaluated combination: $remainderCombination")
                     shortestCombination = remainderCombination
+                    println("resulting combination for target sum $targetSum: $shortestCombination")
+                    println("------------------------------------------------------------------")
+                }
 
             }
         }
 
         memo[targetSum] = shortestCombination
+        println("cached: [key '$targetSum': value '$shortestCombination']")
+        println("Finished executing for current stage. Returning to parent.")
+        println("+++++++++++++++++++++++++++++++++++++++++++++++++")
+        println("In parent call now...")
         return shortestCombination
     }
 
@@ -83,9 +110,9 @@ class BestSum {
 
     @Test
     fun testMemoizedHowSum() {
-        println(memoizedBestSum(7, arrayListOf(5, 3, 4, 7))) // [7]
-        println(memoizedBestSum(8, arrayListOf(2, 3, 5))) // [3, 5]
+//        println(memoizedBestSum(7, arrayListOf(5, 3, 4, 7))) // [7]
+//        println(memoizedBestSum(8, arrayListOf(2, 3, 5))) // [3, 5]
         println(memoizedBestSum(8, arrayListOf(1, 4, 5))) // [4, 4]
-        println(memoizedBestSum(100, arrayListOf(1, 2, 5, 25))) // [25, 25, 25, 25]
+//        println(memoizedBestSum(100, arrayListOf(1, 2, 5, 25))) // [25, 25, 25, 25]
     }
 }
