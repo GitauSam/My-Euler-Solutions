@@ -15,6 +15,12 @@ class FibMemoization {
     }
 
     /**
+     *
+     * UNMEMOIZED
+     *
+     * Time complexity: O(2^n)
+     * Space complexity: O(n)
+     *
      * MEMOIZATION
      *
      * hash map: keys will be args to function
