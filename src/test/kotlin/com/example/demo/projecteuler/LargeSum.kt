@@ -2,6 +2,7 @@ package com.example.demo.projecteuler
 
 import org.junit.Test
 import org.springframework.boot.test.context.SpringBootTest
+import java.math.BigInteger
 
 @SpringBootTest
 class LargeSum {
@@ -114,22 +115,23 @@ class LargeSum {
 
         var finalSum = ""
 
-        var overflow: Long = 0
+        var overflow: BigInteger = BigInteger.ZERO
 
         for (i in 9 downTo 0) {
-            var sumOfSegment: Long = 0
+            var sumOfSegment: BigInteger = BigInteger.ZERO
             for (j in listMain) {
-                sumOfSegment += j[i]
+                sumOfSegment = sumOfSegment.add(j[i])
+//                sumOfSegment += j[i]
             }
-            sumOfSegment += overflow
+            sumOfSegment = sumOfSegment.add(overflow)
 
             overflow = when (sumOfSegment.toString().length > 5) {
                 true -> {
                     println(sumOfSegment.toString().substring(0, sumOfSegment.toString().length - 5))
                     println(sumOfSegment)
-                    sumOfSegment.toString().substring(0, sumOfSegment.toString().length - 5).toLong()
+                    BigInteger.valueOf(sumOfSegment.toString().substring(0, sumOfSegment.toString().length - 5).toLong())
                 }
-                else -> 0
+                else -> BigInteger.ZERO
             }
 
             finalSum = "$sumOfSegment$finalSum"
@@ -141,19 +143,19 @@ class LargeSum {
 //    5537376230
 //    5537376532
 
-    fun returnSplitElementsList(hundredTerms: String): MutableList<MutableList<Int>> {
+    fun returnSplitElementsList(hundredTerms: String): MutableList<MutableList<BigInteger>> {
 
-        val listMain =  mutableListOf<MutableList<Int>>()
+        val listMain =  mutableListOf<MutableList<BigInteger>>()
         var fiveDigits = ""
         val splitHundredTerms = hundredTerms.split("\n")
 
         for (i in splitHundredTerms) {
-            val subArray = mutableListOf<Int>()
+            val subArray = mutableListOf<BigInteger>()
 
             for (j in i.toCharArray()) {
                 fiveDigits += j
                 if (fiveDigits.length == 5) {
-                    subArray.add(fiveDigits.toInt())
+                    subArray.add(BigInteger.valueOf(fiveDigits.toLong()))
                     fiveDigits = ""
                 }
             }
